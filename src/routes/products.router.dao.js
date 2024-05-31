@@ -1,10 +1,5 @@
 import {Router} from 'express'
-//Forma de importar pero muy larga
-//import { getAllProducts, getByProductId,
-//    createProduct, updateProduct, removeProduct } 
-//    from '../controllers/product.controllers'
-
-import * as controllers from '../controllers/product.controllers.js'
+import * as controllers from '../controllers/product.controllers.dao.js'
 
 
 const router = Router()
