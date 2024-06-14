@@ -1,20 +1,24 @@
 {
-  "name": "servidoresexpress",
+  "name": "cookiesesionentrega",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "star": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.1.0",
-    "uuid": "^9.0.1"
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.4.1",
+    "nodemon": "^3.1.3",
+    "session-file-store": "^1.5.0"
   }
 }

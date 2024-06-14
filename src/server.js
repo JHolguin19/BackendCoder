@@ -1,22 +1,48 @@
-import express, { urlencoded } from 'express';
-import ProductManager from './manager/product.manager.js';
-import morgan from 'morgan'
-import productsRouter from './routes/products.router.js';
-import cartRouter from './routes/cart.router.js'
-import { errorHandler } from './middleware/error.handles.js';
-import { __dirname } from './path.js';
+import express from 'express'
+import cookieParser from 'cookie-parser'
+import session, { Cookie } from 'express-session'
+import 'dotenv/config'
+import sessionRouter from './router/user.router.js'
+import viewsRouter from './router/views.router.js'
+import MongoStore from 'connect-mongo'  
+import handlebars from 'express-handlebars';
+import { initMongoDB } from './db/database.js'
+import { __dirname } from './util.js'
+
+
+
+const SECRET =  process.env.SECRET_KEY
+const SECRET_URL = process.env.MONGO_URL
+
+const storeConfig ={
+    store:  MongoStore.create({
+        mongoUrl: SECRET_URL,
+        crypto:{secret: SECRET },
+        ttl: 180
+        
+    }),
+    secret: SECRET,
+    resave: false,
+    saveUninitialized:true,
+    cookie:{
+        maxAge: 180000 //Tener el mismo tiempo del ttl, para que no vaya a finalizar antes y matar la session.
+     }
+}
+
 const app = express()
 
-
-
-const PORT = 8080;
-app.use(express.static(__dirname + 'public'))
 app.use(express.json())
-app.use(urlencoded({extended: true}))
-app.use(morgan('dev'))
-app.use(errorHandler)
+app.use(express.urlencoded({extended: true}))
+app.use(cookieParser())
+app.use(session(storeConfig))
+app.engine('handlebars', handlebars.engine());
+app.set('views', `${__dirname}/views`);
+app.set('view engine', 'handlebars');
 
-app.use('/api/products', productsRouter)
-app.use('/api/carts', cartRouter)
 
-app.listen(PORT, ()=> console.log(`Servidor ok en el puerto: ${PORT}`))
+initMongoDB();
+app.use('/users', sessionRouter)
+app.use('/', viewsRouter)
+
+
+app.listen(8080, ()=> console.log('server ok. Puerto 8080'))
