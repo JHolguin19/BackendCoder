@@ -10,6 +10,7 @@ import { initMongoDB } from './db/database.js'
 import { __dirname } from './util.js'
 import passport from 'passport'
 import './passport/local.strategy.js'
+import './passport/github.strategy.js'
 
 
 
@@ -50,7 +51,7 @@ app.set("view engine", "handlebars");
 initMongoDB();
 
 app.use("/users", sessionRouter)
-app.use("/views", viewsRouter)
+app.use("/", viewsRouter)
 
 
 app.listen(8080, ()=> console.log('server ok. Puerto 8080'))

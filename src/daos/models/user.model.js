@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+ import { Schema, model } from "mongoose";
 
 const UserSchema = new Schema({
     first_name: {
@@ -16,7 +16,7 @@ const UserSchema = new Schema({
     },
     age:{
         type: Number,
-        require:true
+        require:false
     },
     password:{
         type: String,
@@ -25,6 +25,10 @@ const UserSchema = new Schema({
     role:{
         type: String,
         default:'user'
+    },
+    isGithub:{
+        type:Boolean,
+        default:false
     }
 });
 

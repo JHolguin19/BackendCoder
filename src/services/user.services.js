@@ -1,7 +1,6 @@
-import UserDaos from "../daos/user.daos.js"
 import { UserModel } from "../daos/models/user.model.js"
 import { createHash, isValidPassword } from "../util.js";
-
+import UserDaos from "../daos/user.daos.js";
 const userDaos = new UserDaos(UserModel);
 
 

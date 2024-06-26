@@ -4,7 +4,7 @@ import { Strategy as LocalStrategy } from 'passport-local'
 
 const StrategyConfig ={
     usernameField: 'email',
-    passwordField: 'password',
+    passportField: 'password',
     passReqToCallback: true
 }
 

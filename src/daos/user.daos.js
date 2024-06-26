@@ -6,7 +6,7 @@ export default class UserDaos {
 
     async getById(user){
         const {id} = user
-        const userId = await this.model.findById({id})
+        const userId = await this.model.findById(id)
         if(!userId) return null
             else return userId
     }
