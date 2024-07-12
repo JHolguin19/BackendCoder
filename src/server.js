@@ -1,22 +1,25 @@
-import express, { urlencoded } from 'express';
-import ProductManager from './manager/product.manager.js';
+import express, {json, urlencoded} from 'express'
 import morgan from 'morgan'
-import productsRouter from './routes/products.router.js';
-import cartRouter from './routes/cart.router.js'
-import { errorHandler } from './middleware/error.handles.js';
-import { __dirname } from './path.js';
-const app = express()
+import {errorHandler} from './middlewares/errorHandler.js'
+import {initMongoDB} from './db/database.js' 
+import MainRouter from './routes/index.js'
+const mainRouter = new MainRouter()
+import 'dotenv/config'
 
 
+const app = express();
 
-const PORT = 8080;
-app.use(express.static(__dirname + 'public'))
-app.use(express.json())
-app.use(urlencoded({extended: true}))
-app.use(morgan('dev'))
-app.use(errorHandler)
+app
+   .use(json())
+    .use(urlencoded({extended:true}))
+    .use(morgan('dev'))
+    .use('/api', mainRouter.getRouter())
+    .use(errorHandler)
+    
+const PERSISTENCE = process.env.PERSISTENCE;
 
-app.use('/api/products', productsRouter)
-app.use('/api/carts', cartRouter)
+if(PERSISTENCE === 'MONGO') initMongoDB();
 
-app.listen(PORT, ()=> console.log(`Servidor ok en el puerto: ${PORT}`))
+const PORT = 8080
+
+app.listen(PORT, ()=>console.log(`Server ok en el Puerto ${PORT}`))
