@@ -1,22 +1,21 @@
-import express, { urlencoded } from 'express';
-import ProductManager from './manager/product.manager.js';
-import morgan from 'morgan'
-import productsRouter from './routes/products.router.js';
-import cartRouter from './routes/cart.router.js'
-import { errorHandler } from './middleware/error.handles.js';
-import { __dirname } from './path.js';
-const app = express()
+import config from './config.js';
+import express, { json, urlencoded } from 'express';
+import morgan from 'morgan';
+import { errorHandler } from './middlewares/errorHandler.js';
+import MainRouter from './routes/index.js';
+const mainRouter = new MainRouter();
+
+const app = express();
+
+app
+    .use(json())
+    .use(express.static(`${__dirname}/public`))
+    .use(cookieParser())
+    .use(urlencoded({ extended: true }))
+    .use(morgan('dev'))
+    .use('/api', mainRouter.getRouter())
+    .use('/', viewsRouter)
+    .use(errorHandler)
 
 
-
-const PORT = 8080;
-app.use(express.static(__dirname + 'public'))
-app.use(express.json())
-app.use(urlencoded({extended: true}))
-app.use(morgan('dev'))
-app.use(errorHandler)
-
-app.use('/api/products', productsRouter)
-app.use('/api/carts', cartRouter)
-
-app.listen(PORT, ()=> console.log(`Servidor ok en el puerto: ${PORT}`))
+app.listen(PORT, ()=>console.log(`Server OK PORT: ${config.process.PORT} in ${config.NODE_ENV} environment`));
