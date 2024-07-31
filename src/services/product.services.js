@@ -1,8 +1,8 @@
 import Services from "./class.services.js";
 // import ProductDaoMongo from "../daos/mongodb/product.dao.js";
-import persistence from "../daos/persistence.js";
+import factory from "../persistence/factory.js";
 
-const { prodDao } = persistence;
+const { prodDao } = factory;
 
 // const prodDao = new ProductDaoMongo();
 

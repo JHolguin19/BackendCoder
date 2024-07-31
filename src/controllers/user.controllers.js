@@ -21,9 +21,10 @@ export default class UserController extends Controllers{
   login = async(req, res, next) =>{
     try {
      const token = await this.service.login(req.body);
-     //.header('Authorization', token)
-     res.cookie('token', token, {httpOnly:true});
+     res.header('Authorization', token)
+     
      !token ? createResponse(res, 404, token) : createResponse(res, 200, token);
+    
     } catch (error) {
       next(error); 
     }

@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "start:mongo":"node . mongo",
+    "dev": "nodemon .",
+    "start:fs":"node . fs"
   },
   "keywords": [],
   "author": "",
