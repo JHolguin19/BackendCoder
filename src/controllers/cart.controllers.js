@@ -1,7 +1,8 @@
 import Controllers from "./class.controller.js";
-import CartService from '../services/cart.services.js';
-import { createResponse } from "../utils.js";
-const cartService = new CartService();
+import CartServices from '../services/cart.services.js';
+import { HttpResponse } from "../utils/http.response.js";
+const httpResponse = new HttpResponse();
+const cartService = new CartServices();
 
 export default class CartController extends Controllers{
   constructor(){
@@ -9,14 +10,16 @@ export default class CartController extends Controllers{
   }
   addProdToCart = async (req, res, next) => {
     try {
-      const { idCart } = req.params;
+      const { cart } = req.user;
       const { idProd } = req.params;
+      console.log('id carrito:' + cart)
+      console.log('id prod:' + idProd)
       const newProdToUserCart = await this.service.addProdToCart(
-        idCart,
+        cart,
         idProd,
       );
-      if (!newProdToUserCart) createResponse(res, 404, { msg: "Error add product to cart" });
-      else createResponse(res, 200, newProdToUserCart);
+      if (!newProdToUserCart) return httpResponse.NotFound(res, { msg: "Error add product to cart" });
+      else return httpResponse.Ok(res, newProdToUserCart);
     } catch (error) {
       next(error);
     }
@@ -30,8 +33,8 @@ export default class CartController extends Controllers{
         idCart,
         idProd,
       );
-      if (!delProdToUserCart) createResponse(res, 404, { msg: "cart or prod not existant" });
-      else createResponse(res, 200, {msg: `product ${idProd} deleted to cart`});
+      if (!delProdToUserCart) return httpResponse.NotFound(res, { msg: "cart or prod not existant" });
+      else httpResponse.Ok(res, {msg: `product ${idProd} deleted to cart`});
     } catch (error) {
       next(error);
     }
@@ -47,8 +50,8 @@ export default class CartController extends Controllers{
         idProd,
         quantity
       );
-      if (!updateProdQuantity) createResponse(res, 404, { msg: "cart or prod not existant" });
-      else createResponse(res, 200, updateProdQuantity);
+      if (!updateProdQuantity) return httpResponse.NotFound(res, { msg: "cart or prod not existant" });
+      else return httpResponse.Ok(res, updateProdQuantity);
     } catch (error) {
       next(error);
     }
@@ -60,8 +63,8 @@ export default class CartController extends Controllers{
       const clearCart = await this.service.clearCart(
         idCart,
       );
-      if (!clearCart) createResponse(res, 404, { msg: "Error clear cart" });
-      else createResponse(res, 200, clearCart);
+      if (!clearCart) return httpResponse.NotFound(res, { msg: "Error clear cart" });
+      else return httpResponse.Ok(res, clearCart);
     } catch (error) {
       next(error);
     }

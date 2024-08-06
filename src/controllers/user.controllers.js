@@ -1,6 +1,7 @@
 import Controllers from "./class.controller.js";
 import UserService from '../services/user.services.js';
-import { createResponse } from "../utils.js";
+import { HttpResponse } from "../utils/http.response.js";
+const httpResponse = new HttpResponse();
 
 const userService = new UserService();
 
@@ -12,7 +13,8 @@ export default class UserController extends Controllers{
   register = async(req, res, next) =>{
     try {
       const data = await this.service.register(req.body);
-      !data ? createResponse(res, 404, data) : createResponse(res, 200, data);
+      if(!data) return httpResponse.NotFound(res, 404, data)
+        else return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);
     }
@@ -21,22 +23,23 @@ export default class UserController extends Controllers{
   login = async(req, res, next) =>{
     try {
      const token = await this.service.login(req.body);
-     //.header('Authorization', token)
-     res.cookie('token', token, {httpOnly:true});
-     !token ? createResponse(res, 404, token) : createResponse(res, 200, token);
+      res.cookie('token', token, { httpOnly: true });
+     if(!token) return httpResponse.NotFound(res, token) 
+      else return httpResponse.Ok(res, token);
     } catch (error) {
-      next(error); 
+      next(error);
     }
   };
 
-  profile =(req, res, next)=>{
+  profile = async(req, res, next)=>{
     try {
      if(req.user){
-      const { first_name, last_name, email, role } = req.user;
-      createResponse(res, 200, {
-        first_name, last_name, email, role
+      const {_id} = req.user;
+      const user = await this.service.getUserById(_id)
+      return httpResponse.Ok(res, {
+      user
       })
-     } else createResponse(res, 403, { msg: 'Unhautorized' })
+     } else httpResponse.Unauthorized(res, { msg: 'Unhautorized' })
     } catch (error) {
       next(error);
     }
