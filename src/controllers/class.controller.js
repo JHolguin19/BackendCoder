@@ -1,3 +1,4 @@
+import errorDictionary from '../utils/error.dictionary.js';
 import { HttpResponse } from '../utils/http.response.js';
 
 const httpResponse= new HttpResponse()
@@ -19,7 +20,7 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const data = await this.service.getById(id);
-      if(!data) return httpResponse.NotFound(res, data)
+      if(!data) return httpResponse.NotFound(res, errorDictionary.NOT_FOUND_ID)
       else return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);
@@ -39,7 +40,7 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const data = await this.service.update(id, req.body);
-      if(!data) return httpResponse.NotFound(res, data)
+      if(!data) return httpResponse.NotFound(res, errorDictionary.ERROR_TO_UPDATE)
         else return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);
@@ -50,7 +51,7 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const data = await this.service.delete(id);
-      if(!data) return httpResponse.NotFound(res, data)
+      if(!data) return httpResponse.NotFound(res, errorDictionary.ERROR_TO_DELETE)
         else return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);

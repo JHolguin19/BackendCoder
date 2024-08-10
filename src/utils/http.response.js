@@ -9,35 +9,35 @@ const HttpStatus ={
 
 export class HttpResponse{
     Ok(res, data){
-        return res.status(HttpResponse.OK).json({
+        return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
         message: 'Succes',
         data
         })
     }
     NotFound(res, data){
-        return res.status(HttpResponse.OK).json({
+        return res.status(HttpStatus.OK).json({
             status: HttpStatus.NOT_FOUND,
             message: 'Not Found',
             error: data
             })
     }
     Unauthorized(res, data){
-        return res.status(HttpResponse.UNAUTHORIZED).json({
+        return res.status(HttpStatus.UNAUTHORIZED).json({
             status: HttpStatus.UNAUTHORIZED,
             message: 'Unauthorized',
             error:data
             })
     }
     Forbidden(res, data){
-        return res.status(HttpResponse.FORBIDDEN).json({
+        return res.status(HttpStatus.FORBIDDEN).json({
             status: HttpStatus.FORBIDDEN,
             message: 'Forbidden',
             error:data
             })
     }
     ServerError(res, data){
-        return res.status(HttpResponse.INTERNAL_SERVER_ERROR).json({
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             message: 'Internal Server Error',
             error:data

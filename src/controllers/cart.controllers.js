@@ -1,6 +1,7 @@
 import Controllers from "./class.controller.js";
 import CartServices from '../services/cart.services.js';
 import { HttpResponse } from "../utils/http.response.js";
+import errorDictionary from "../utils/error.dictionary.js";
 const httpResponse = new HttpResponse();
 const cartService = new CartServices();
 
@@ -18,7 +19,7 @@ export default class CartController extends Controllers{
         cart,
         idProd,
       );
-      if (!newProdToUserCart) return httpResponse.NotFound(res, { msg: "Error add product to cart" });
+      if (!newProdToUserCart) return httpResponse.NotFound(res, errorDictionary.ERROR_ADD_PROD_CART);
       else return httpResponse.Ok(res, newProdToUserCart);
     } catch (error) {
       next(error);
@@ -33,7 +34,7 @@ export default class CartController extends Controllers{
         idCart,
         idProd,
       );
-      if (!delProdToUserCart) return httpResponse.NotFound(res, { msg: "cart or prod not existant" });
+      if (!delProdToUserCart) return httpResponse.NotFound(res, errorDictionary.ERROR_TO_REMOVE_PROD);
       else httpResponse.Ok(res, {msg: `product ${idProd} deleted to cart`});
     } catch (error) {
       next(error);
@@ -50,7 +51,7 @@ export default class CartController extends Controllers{
         idProd,
         quantity
       );
-      if (!updateProdQuantity) return httpResponse.NotFound(res, { msg: "cart or prod not existant" });
+      if (!updateProdQuantity) return httpResponse.NotFound(res, errorDictionary.ERROR_UPDATE_QUANTITY_PROD);
       else return httpResponse.Ok(res, updateProdQuantity);
     } catch (error) {
       next(error);
@@ -63,7 +64,7 @@ export default class CartController extends Controllers{
       const clearCart = await this.service.clearCart(
         idCart,
       );
-      if (!clearCart) return httpResponse.NotFound(res, { msg: "Error clear cart" });
+      if (!clearCart) return httpResponse.NotFound(res, errorDictionary.ERROR_TO_CLEAN_CART);
       else return httpResponse.Ok(res, clearCart);
     } catch (error) {
       next(error);
