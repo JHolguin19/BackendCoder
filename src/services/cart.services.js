@@ -1,11 +1,9 @@
 import Services from "./class.services.js";
-// import ProductDaoMongoDB from "../daos/mongodb/product.dao.js";
-// const prodDao = new ProductDaoMongoDB();
-// import CartDaoMongoDB from "../daos/mongodb/cart.dao.js";
-// const cartDao = new CartDaoMongoDB();
-import persistence from "../daos/persistence.js";
+import ProductDaoMongoDB from "../persistence/daos/mongodb/product.dao.js";
+const prodDao = new ProductDaoMongoDB();
+import CartDaoMongoDB from "../persistence/daos/mongodb/cart.dao.js";
+const cartDao = new CartDaoMongoDB();
 
-const {prodDao, cartDao} = persistence;
 
 
 export default class CartServices extends Services {
@@ -15,10 +13,11 @@ export default class CartServices extends Services {
 
   addProdToCart = async (cartId, prodId) => {
     try {
-      const existCart = await getById(cartId);
+      const existCart = await this.getById(cartId);
+      console.log(existCart)
       if (!existCart) return null;
-  
       const existProd = await prodDao.getById(prodId);
+      console.log(existProd)
       if (!existProd) return null;
   
       return await this.dao.addProdToCart(cartId, prodId);
