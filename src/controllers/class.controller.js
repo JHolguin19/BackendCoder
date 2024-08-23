@@ -1,5 +1,7 @@
-import { createResponse } from '../utils.js';
+import errorDictionary from '../utils/error.dictionary.js';
+import { HttpResponse } from '../utils/http.response.js';
 
+const httpResponse= new HttpResponse()
 export default class Controllers {
   constructor(service) {
     this.service = service;
@@ -8,7 +10,7 @@ export default class Controllers {
   getAll = async(req, res, next) =>{
     try {
       const data = await this.service.getAll();
-      createResponse(res, 200, data);
+      return httpResponse.Ok(res, data)
     } catch (error) {
       next(error);
     }
@@ -18,8 +20,8 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const data = await this.service.getById(id);
-      if(!data) createResponse(res, 404, data)
-      else createResponse(res, 200, data);
+      if(!data) return httpResponse.NotFound(res, errorDictionary.NOT_FOUND_ID)
+      else return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);
     }
@@ -28,7 +30,7 @@ export default class Controllers {
   create = async(req, res, next) => {
     try {
       const data = await this.service.create(req.body);
-      createResponse(res, 200, data);
+      return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);
     }
@@ -38,8 +40,8 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const data = await this.service.update(id, req.body);
-      if(!data) createResponse(res, 404, data)
-        else createResponse(res, 200, data);
+      if(!data) return httpResponse.NotFound(res, errorDictionary.ERROR_TO_UPDATE)
+        else return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);
     }
@@ -49,8 +51,8 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const data = await this.service.delete(id);
-      if(!data) createResponse(res, 404, data)
-        else createResponse(res, 200, data);
+      if(!data) return httpResponse.NotFound(res, errorDictionary.ERROR_TO_DELETE)
+        else return httpResponse.Ok(res, data);
     } catch (error) {
       next(error);
     }
