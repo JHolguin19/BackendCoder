@@ -21,7 +21,8 @@ export default class Services {
 
   async create(obj) {
     try {
-      return await this.dao.create(obj);
+      const product = obj
+        return await this.dao.create(obj);
     } catch (error) {
       throw new Error(error);
     }

@@ -17,7 +17,9 @@ export default{
     SECRET_COOKIES: process.env.SECRET_COOKIES,
     EMAIL: process.env.EMAIL,
     PASSWORD: process.env.PASSWORD,
-    SECRET_KEY: process.env.SECRET_KEY
+    SECRET_KEY: process.env.SECRET_KEY,
+    EMAIL_PREMIUM: process.env.EMAIL_PREMIUM,
+    PASSP: process.env.PASSP_ADMIN
     
 
 }

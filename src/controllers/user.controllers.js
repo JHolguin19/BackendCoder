@@ -26,7 +26,7 @@ export default class UserController extends Controllers{
     try {
      const token = await this.service.login(req.body);
       res.cookie('token', token, { httpOnly: true });
-     if(!token) return httpResponse.NotFound(res, token) 
+     if(!token) return httpResponse.NotFound(res, {msg: 'No existe le token'}) 
       else return httpResponse.Ok(res, token);
     } catch (error) {
       next(error);
@@ -50,7 +50,8 @@ export default class UserController extends Controllers{
   tokenResetPass = async(req, res, next) => {
     try {
       const user = req.user;
-      const token = await this.service.tokenResetPass(user);
+      const token = await userService.tokenResetPass(user);
+      console.log(token)
       if(token){
         await sendMail(user, 'resetPass', token);
         res.cookie('tokenpass', token)
@@ -66,7 +67,7 @@ export default class UserController extends Controllers{
     try {
       const user = req.user;
       const { pass } =req.body
-      const { tokenpass } = req.cookie
+      const { tokenpass } = req.cookies
       if(!tokenpass) return httpResponse.Unauthorized(res, {msg : 'Unauthoriezed'})
         const updPass = await userService.updatePass(pass, user);
       if(!updPass) return httpResponse.NotFound(res, {msg : 'cant be same'})
@@ -76,6 +77,4 @@ export default class UserController extends Controllers{
       next(error);
     } 
   }
-
-
 };

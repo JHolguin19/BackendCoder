@@ -41,7 +41,17 @@ export default class UserService extends Services {
           });
           await sendMail(user, "register");
           return newUser;
-        } else {
+        } else if(email === config.EMAIL_PREMIUM && password === config.PASSP){
+          const newUser = await this.dao.create({
+            ...user,
+            password: createHash(password),
+            role: "PREMIUM",
+            cart: cartUser._id,
+          });
+          await sendMail(user, "register");
+          return newUser;
+        }
+          else {
           const newUser = await this.dao.create({
             ...user,
             password: createHash(password),
@@ -83,7 +93,6 @@ export default class UserService extends Services {
   async tokenResetPass(user){
     try {
       return this.generateToken(user, '1h');
-
     } catch (error) {
       throw new Error(error)
     }
