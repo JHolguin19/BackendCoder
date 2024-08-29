@@ -1,0 +1,26 @@
+components:
+  parameters:
+    schemas:
+      BodyProducts:
+        type: object
+        required:
+          - name
+          - description
+          - price
+          - stock
+        properties:
+          name:
+            type: string
+            description: nombre del producto
+            example: Pedrito
+          description:
+            type: string
+            description: Pqña descripción del producto
+            example: perifericos inalambricos con bateria recargable
+          price:
+            type: number
+            description: Precio del producto
+            example: 8500
+          stock:
+            type: number
+            description: Unidades disponibles del producto  

@@ -1,0 +1,49 @@
+components:
+  schema:
+    Products:
+      Product:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Nombre del Producto
+          description:
+            type: string
+            description: Pqña descripción del producto
+          price:
+            type: number
+            description: Precio del producto
+          stock:
+            type: number
+            description: Unidades disponibles del producto
+      GetAllProducts:
+        type: array
+        items: 
+          properties:
+            name:
+              type: string
+              description: Nombre del Producto
+            description:
+              type: string
+              description: Pqña descripción del producto
+            price:
+              type: number
+              description: Precio del producto
+            stock:
+              type: number
+              description: Unidades disponibles delproducto
+      ErrorGetById:
+        type: string
+        properties:
+          msg:
+            type: string
+            description: No se encontró el id del producto
+      DeleteById:
+        type: string
+        description: Error to delete product
+      InternalServerError:
+        type: object
+        properties:
+          msg:
+            type: string
+            description: Error del servidor
